@@ -7,7 +7,96 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+#root {
+  display: flex;
+  justify-content: space-around;
 }
+
+button,
+input {
+  font-size: 15px;
+}
+
+button:focus {
+  outline: 0;
+}
+
+.calendar {
+  width: 42rem;
+  height: 100vh;
+}
+
+.control-pane {
+  height: 10%;
+  background-color: #ebebeb;
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+}
+
+.control-pane button {
+  border: transparent;
+  background: transparent;
+  width: 50px;
+  cursor: pointer;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  height: 90%;
+}
+
+.day {
+  border: 1px solid #ebebeb;
+  text-align: center;
+  padding-top: 5px;
+}
+
+.day:not(.current-month) {
+  background-color: #f1f1f1;
+  color: #afafaf;
+}
+
+.current-day {
+  background-color: #dff6fe;
+}
+
+.event-form {
+  margin-top: 7rem;
+  width: 300px;
+  border: 1px solid #ebebeb;
+  padding: 20px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.event-form input,
+.event-form button {
+  height: 30px;
+}
+
+.event-form input {
+  margin-bottom: 10px;
+}
+
+.event {
+  background: #febcfd;
+  margin: .3rem -1px;
+  display: block;
+  height: 18px;
+}
+
+.event.start {
+  border-bottom-left-radius: 1rem;
+  border-top-left-radius: 1rem;
+  margin-right: -1px;
+}
+
+.event.end {
+  border-bottom-right-radius: 1rem;
+  border-top-right-radius: 1rem;
+  margin-left: -1px;
+}
+
