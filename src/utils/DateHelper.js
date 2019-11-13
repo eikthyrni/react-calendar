@@ -1,4 +1,4 @@
-import Dates from './Dates'
+import Months from './Months'
 
 export default {
     MILLISECONDS_IN_DAY: (24 * 60 * 60 * 1000),
@@ -29,27 +29,27 @@ export default {
         return lastDateOfMonth.getDate()
     },
 
-    visibleFrom: (dates) => {
-        const startDate = dates.previous.length() - dates.current.firstDay() + 1;
+    visibleFrom: (months) => {
+        const startDate = months.previous.length() - months.current.firstDay() + 1;
 
-        return dates.current.firstDay() === 0 ?
-            dates.current.firstDate() :
-            new Date(dates.previous.year, dates.previous.month, startDate);
+        return months.current.firstDay() === 0 ?
+            months.current.firstDate() :
+            new Date(months.previous.year, months.previous.month, startDate);
     },
 
-    visibleTo: (dates) => {
-        const endDate = dates.current.length() + 7 - dates.current.lastDay();
+    visibleTo: (months) => {
+        const endDate = months.current.length() + 7 - months.current.lastDay();
 
-        return dates.current.lastDay() === 0 ?
-            dates.current.lastDate() :
-            new Date(dates.current.year, dates.current.month, endDate);
+        return months.current.lastDay() === 0 ?
+            months.current.lastDate() :
+            new Date(months.current.year, months.current.month, endDate);
     },
 
     visibleWeeks: function(date) {
-        const dates = new Dates(date);
+        const months = new Months(date);
 
-        const visibleFrom = this.visibleFrom(dates),
-              visibleTo = this.visibleTo(dates);
+        const visibleFrom = this.visibleFrom(months),
+              visibleTo = this.visibleTo(months);
 
         let fromDateTime = this.getTime(visibleFrom),
             toDateTime = this.getTime(visibleTo);

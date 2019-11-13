@@ -1,6 +1,6 @@
 import DateHelper from './DateHelper'
 
-export default class Dates {
+export default class Months {
     constructor(date) {
         this.current = this.getMonthParams(date);
         this.previous = this.getMonthParams(DateHelper.prevMonth(date));
