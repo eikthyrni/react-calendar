@@ -1,7 +1,20 @@
 import React from 'react';
-import Input from "../Components/Input";
-import Actions from "../../actions";
+import FormInput from "../Components/Input";
+import Actions from "../actions";
 import {useDispatch} from "react-redux";
+import styled from 'styled-components';
+import Button from '../Components/Button';
+
+const Form = styled.form`
+    width: 300px;
+    height: 100%;
+    border: 1px solid #ebebeb;
+    margin-top: 7rem;
+    padding: 1.3rem;
+    padding-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+`;
 
 const EventForm = () => {
     const dispatch = useDispatch();
@@ -19,23 +32,20 @@ const EventForm = () => {
     };
 
     return (
-        <form
-            className='event-form'
-            onSubmit={createEvent}
-        >
-            <Input
+        <Form onSubmit={createEvent}>
+            <FormInput
                 name='label'
             />
-            <Input
+            <FormInput
                 name='starts'
                 placeholder='YYYY-MM-DD'
             />
-            <Input
+            <FormInput
                 name='ends'
                 placeholder='YYYY-MM-DD'
             />
-            <button type='submit'>Submit</button>
-        </form>
+            <Button text='Submit' />
+        </Form>
     )
 };
 

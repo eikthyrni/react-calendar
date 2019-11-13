@@ -1,15 +1,16 @@
 import { ActionTypes } from '../../actions';
+import DateHelper from '../../utils/DateHelper';
 
 const initialState = new Date();
 
 function date(state = initialState, action) {
-    let date = new Date(state);
+    const date = new Date(state);
 
     switch (action.type) {
         case ActionTypes.PREV_MONTH:
-            return date.setMonth(date.getMonth() - 1);
+            return DateHelper.prevMonth(date);
         case ActionTypes.NEXT_MONTH:
-            return date.setMonth(date.getMonth() + 1);
+            return DateHelper.nextMonth(date);
         default:
             return state
     }
