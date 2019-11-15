@@ -12,10 +12,10 @@ const EventSection = styled.div`
     height: .9rem;
 
     ${({ borderRadius }) => {
-        const leftBorderRadius = `${borderRadius.left ? '1' : '0'}rem`;
-        const rightBorderRadius = `${borderRadius.right ? '1' : '0'}rem`;
+        const leftBorderRadius = `${+borderRadius.left}rem`;
+        const rightBorderRadius = `${+borderRadius.right}rem`;
 
-        return `
+        return borderRadius && `
             border-bottom-left-radius: ${leftBorderRadius};
             border-top-left-radius: ${leftBorderRadius};
             border-bottom-right-radius: ${rightBorderRadius};
@@ -24,10 +24,10 @@ const EventSection = styled.div`
     }}
 
     ${({ margin }) => {
-        const leftMargin = `calc((42rem / 7) * ${margin.left || 0})`;
-        const rightMargin = `calc((42rem / 7) * ${margin.right || 0})`;
+        const leftMargin = `calc((42rem / 7) * ${margin.left})`;
+        const rightMargin = `calc((42rem / 7) * ${margin.right})`;
 
-        return `
+        return margin && `
             margin-left: ${leftMargin};
             margin-right: ${rightMargin};
         `
@@ -50,21 +50,21 @@ const Event = (props) => {
     const weekStarts = week[0];
     const weekEnds = week[6];
 
-    const hasMargin = () => ({
+    const hasMargin = {
         left: eventStarts > weekStarts && DateHelper.dayFromMonday(event.starts),
         right: eventEnds < weekEnds && DateHelper.daysToSunday(event.ends)
-    });
+    };
 
-    const hasBorderRadius = () => ({
+    const hasBorderRadius = {
         left: eventStarts === weekStarts || eventStarts > weekStarts,
         right: eventEnds === weekEnds || eventEnds < weekEnds
-    });
+    };
 
     return (
         <EventRow>
             <EventSection
-                margin={hasMargin()}
-                borderRadius={hasBorderRadius()}
+                margin={hasMargin}
+                borderRadius={hasBorderRadius}
             >
                 {event.label}
             </EventSection>
