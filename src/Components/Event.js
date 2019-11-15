@@ -10,28 +10,24 @@ const EventSection = styled.div`
     padding-left: .6rem;
     font-size: 12px;
     height: .9rem;
+    
+    ${({ borderLeftRadius }) => borderLeftRadius && `
+        border-bottom-left-radius: 1rem;
+        border-top-left-radius: 1rem;
+    `}
+    
+    ${({ borderRightRadius }) => borderRightRadius && `
+        border-bottom-right-radius: 1rem;
+        border-top-right-radius: 1rem;
+    `}
 
-    ${({ borderRadius }) => {
-        const leftBorderRadius = `${borderRadius.left && 1}rem`;
-        const rightBorderRadius = `${borderRadius.right && 1}rem`;
-
-        return borderRadius && `
-            border-bottom-left-radius: ${leftBorderRadius};
-            border-top-left-radius: ${leftBorderRadius};
-            border-bottom-right-radius: ${rightBorderRadius};
-            border-top-right-radius: ${rightBorderRadius};
-        `
-    }}
-
-    ${({ margin }) => {
-        const leftMargin = `calc((42rem / 7) * ${margin.left})`;
-        const rightMargin = `calc((42rem / 7) * ${margin.right})`;
-
-        return margin && `
-            margin-left: ${leftMargin};
-            margin-right: ${rightMargin};
-        `
-    }}
+    ${({ marginLeft }) => marginLeft && `
+        margin-left: calc((42rem / 7) * ${marginLeft});
+    `}
+    
+    ${({ marginRight }) => marginRight && `
+        margin-right: calc((42rem / 7) * ${marginRight});
+    `}
 `;
 
 const EventRow = styled.div`
@@ -63,8 +59,10 @@ const Event = (props) => {
     return (
         <EventRow>
             <EventSection
-                margin={hasMargin}
-                borderRadius={hasBorderRadius}
+                marginLeft={hasMargin.left}
+                marginRight={hasMargin.right}
+                borderLeftRadius={hasBorderRadius.left}
+                borderRightRadius={hasBorderRadius.right}
             >
                 {event.label}
             </EventSection>
