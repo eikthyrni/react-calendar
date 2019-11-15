@@ -12,8 +12,8 @@ const EventSection = styled.div`
     height: .9rem;
 
     ${({ borderRadius }) => {
-        const leftBorderRadius = `${+borderRadius.left}rem`;
-        const rightBorderRadius = `${+borderRadius.right}rem`;
+        const leftBorderRadius = `${borderRadius.left && 1}rem`;
+        const rightBorderRadius = `${borderRadius.right && 1}rem`;
 
         return borderRadius && `
             border-bottom-left-radius: ${leftBorderRadius};
