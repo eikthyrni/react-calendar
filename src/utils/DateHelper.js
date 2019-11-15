@@ -1,102 +1,115 @@
-import Months from './Months'
+const MILLISECONDS_IN_DAY = (24 * 60 * 60 * 1000);
 
-export default {
-    MILLISECONDS_IN_DAY: (24 * 60 * 60 * 1000),
+export const getTime = (date) => new Date(date).getTime();
 
-    getTime: (date) => {
-        return new Date(date).getTime()
-    },
+const getEventDuration = (event) => {
+    const timeDifference = getTime(event.ends) - getTime(event.starts);
+    return timeDifference / MILLISECONDS_IN_DAY;
+};
 
-    getEventDuration: function(event) {
-        const timeDifference = this.getTime(event.ends) - this.getTime(event.starts);
-        return timeDifference / this.MILLISECONDS_IN_DAY;
-    },
+const nextDate = (date) => {
+    const dateObj = new Date(date);
+    return dateObj.setDate(dateObj.getDate() + 1)
+};
 
-    prevMonth: (date) => {
-        const dateObj = new Date(date);
-        return dateObj.setMonth(dateObj.getMonth() - 1)
-    },
+export const prevMonth = (date) => {
+    const dateObj = new Date(date);
+    return dateObj.setMonth(dateObj.getMonth() - 1)
+};
 
-    nextMonth: (date) => {
-        const dateObj = new Date(date);
-        return dateObj.setMonth(dateObj.getMonth() + 1)
-    },
+export const nextMonth = (date) => {
+    const dateObj = new Date(date);
+    return dateObj.setMonth(dateObj.getMonth() + 1)
+};
 
-    monthLength: (date) => {
-        const dateObj = new Date(date),
-            lastDateOfMonth = new Date(dateObj.getFullYear(), dateObj.getMonth() + 1, 0);
+export const monthLength = (date) => {
+    const dateObj = new Date(date);
+    const lastDateOfMonth = new Date(dateObj.getFullYear(), dateObj.getMonth() + 1, 0);
 
-        return lastDateOfMonth.getDate()
-    },
+    return lastDateOfMonth.getDate()
+};
 
-    visibleFrom: (months) => {
-        const startDate = months.previous.length() - months.current.firstDay() + 1;
+const firstDate = (date) => {
+    const dateObj = new Date(date);
+    return new Date(dateObj.getFullYear(), dateObj.getMonth())
+};
 
-        return months.current.firstDay() === 0 ?
-            months.current.firstDate() :
-            new Date(months.previous.year, months.previous.month, startDate);
-    },
+const lastDate = (currentDate) => {
+    const dateObj = new Date(currentDate);
+    return new Date(dateObj.getFullYear(), dateObj.getMonth(), monthLength(dateObj))
+};
 
-    visibleTo: (months) => {
-        const endDate = months.current.length() + 7 - months.current.lastDay();
+const firstDay = (date) => dayFromMonday(firstDate(date));
 
-        return months.current.lastDay() === 0 ?
-            months.current.lastDate() :
-            new Date(months.current.year, months.current.month, endDate);
-    },
+const lastDay = (currentDate) => lastDate(currentDate).getDay();
 
-    visibleWeeks: function(date) {
-        const months = new Months(date);
+const visibleFrom = (currentDate) => {
+    const previousMonth = new Date(prevMonth(currentDate));
+    const currentMonthFirstDay = firstDay(currentDate);
+    const startDate = monthLength(previousMonth) - currentMonthFirstDay + 1;
 
-        const visibleFrom = this.visibleFrom(months),
-              visibleTo = this.visibleTo(months);
+    return currentMonthFirstDay === 0 ?
+        firstDate(currentDate) :
+        new Date(previousMonth.getFullYear(), previousMonth.getMonth(), startDate);
+};
 
-        let fromDateTime = this.getTime(visibleFrom),
-            toDateTime = this.getTime(visibleTo);
+const visibleTo = (currentDate) => {
+    const currentMonthLastDay = lastDay(currentDate);
+    const endDate = monthLength(currentDate) + 7 - currentMonthLastDay;
 
-        const days = [],
-            sortedDays = [];
+    return currentMonthLastDay === 0 ?
+        lastDate(currentDate) :
+        new Date(currentDate.getFullYear(), currentDate.getMonth(), endDate);
+};
 
-        while (fromDateTime <= toDateTime) {
-            days.push(fromDateTime);
-            let date = new Date(fromDateTime);
-            fromDateTime = date.setDate(date.getDate() + 1);
+export const visibleWeeks = (date) => {
+    const currentDate = new Date(date);
 
-            if (days.length === 7) {
-                sortedDays.push(days.splice(0, 7));
-            }
+    let fromDateTime = getTime(visibleFrom(currentDate));
+    let toDateTime = getTime(visibleTo(currentDate));
+
+    const days = [];
+    const sortedDays = [];
+
+    while (fromDateTime <= toDateTime) {
+        days.push(fromDateTime);
+        let date = new Date(fromDateTime);
+        fromDateTime = nextDate(date);
+
+        if (days.length === 7) {
+            sortedDays.push(days.splice(0, 7));
         }
-
-        return sortedDays
-    },
-
-    sortByWeek: function(week, events) {
-        const weekStarts = week[0],
-            weekEnds = week[6],
-            sortedEvents = [];
-
-        for (const event of events) {
-            const eventStarts = this.getTime(event.starts),
-                eventEnds = this.getTime(event.ends);
-
-            const rangesOverlapping = weekStarts <= eventEnds && eventStarts <= weekEnds;
-
-            if (rangesOverlapping) {
-                sortedEvents.push(event);
-            }
-        }
-
-        sortedEvents.sort((a, b) => this.getEventDuration(b) - this.getEventDuration(a));
-        return sortedEvents
-    },
-
-    dayFromMonday: function(date) {
-        const day = new Date(date).getDay();
-        return day === 0 ? 6 : day - 1
-    },
-
-    daysToSunday: function(date) {
-        const day = new Date(date).getDay();
-        return 7 - day;
     }
-}
+
+    return sortedDays
+};
+
+export const sortByWeek = (week, events) => {
+    const weekStarts = week[0];
+    const weekEnds = week[6];
+    const sortedEvents = [];
+
+    for (const event of events) {
+        const eventStarts = getTime(event.starts);
+        const eventEnds = getTime(event.ends);
+
+        const rangesOverlapping = weekStarts <= eventEnds && eventStarts <= weekEnds;
+
+        if (rangesOverlapping) {
+            sortedEvents.push(event);
+        }
+    }
+
+    sortedEvents.sort((a, b) => getEventDuration(b) - getEventDuration(a));
+    return sortedEvents
+};
+
+export const dayFromMonday = (date) => {
+    const day = new Date(date).getDay();
+    return day === 0 ? 6 : day - 1
+};
+
+export const daysToSunday = (date) => {
+    const day = new Date(date).getDay();
+    return 7 - day;
+};

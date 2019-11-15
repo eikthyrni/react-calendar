@@ -1,6 +1,6 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import DateHelper from '../utils/DateHelper';
+import * as DateHelper from '../utils/DateHelper';
 import styled from 'styled-components';
 import Week from '../Components/Week';
 import Button from "../Components/Button";
@@ -36,23 +36,31 @@ const Calendar = () => {
     const currentDate = new Date(date),
         weeks = DateHelper.visibleWeeks(date);
 
+    const handlePrevMonth = () => {
+        dispatch(Actions.prevMonth())
+    };
+
+    const handleNextMonth = () => {
+        dispatch(Actions.nextMonth())
+    };
+
     return (
         <Cal>
             <ControlPane>
                 <Button
                     text='<'
-                    onClick={() => dispatch(Actions.prevMonth())}
+                    onClick={handlePrevMonth}
                 />
                 <Header>
                     {currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
                 </Header>
                 <Button
                     text='>'
-                    onClick={() => dispatch(Actions.nextMonth())}
+                    onClick={handleNextMonth}
                 />
             </ControlPane>
             <Weeks>
-                {weeks.map((week, index) => <Week key={index} week={week} />)}
+                {weeks.map((week) => <Week key={week[0]} week={week} />)}
             </Weeks>
         </Cal>
     )

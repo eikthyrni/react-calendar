@@ -21,17 +21,15 @@ const Input = styled.input`
     }
 `;
 
-const FormInput = ({ name, placeholder }) => {
-    return (
-        <>
-            <Label>{name}</Label>
-            <Input
-                name={name}
-                placeholder={placeholder}
-                autoComplete='off'
-            />
-        </>
-    )
-};
+const FormInput = ({ name, placeholder }) => (
+    <>
+        <Label>{name}</Label>
+        <Input
+            name={name}
+            placeholder={placeholder}
+            autoComplete='off'
+        />
+    </>
+);
 
 export default FormInput;

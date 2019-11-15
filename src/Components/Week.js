@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
 import Day from "./Day";
-import DateHelper from '../utils/DateHelper';
+import * as DateHelper from '../utils/DateHelper';
 import Event from "./Event";
 import {useSelector} from "react-redux";
 
@@ -32,10 +32,10 @@ const Week = (props) => {
     return (
         <WeekWrapper>
             <LabelsRow>
-                {week.map((day, index) => <Day key={index} day={day} /> )}
+                {week.map((day) => <Day key={day} day={day} /> )}
             </LabelsRow>
             <EventsRow>
-                {sortedEvents.map((event, index) => <Event key={index} event={event} week={week} />)}
+                {sortedEvents.map((event) => <Event key={event.id} event={event} week={week} />)}
             </EventsRow>
         </WeekWrapper>
     );

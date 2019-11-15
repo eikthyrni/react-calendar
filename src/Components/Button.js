@@ -18,12 +18,10 @@ const Btn = styled.button`
     }
 `;
 
-const Button = (props) => {
-    return(
-        <Btn {...props} >
-            {props.text}
-        </Btn>
-    )
-};
+const Button = (props) => (
+    <Btn {...props} >
+        {props.text}
+    </Btn>
+);
 
 export default Button;

@@ -1,5 +1,5 @@
 import { ActionTypes } from '../../actions';
-import DateHelper from '../../utils/DateHelper';
+import * as DateHelper from '../../utils/DateHelper';
 
 const initialState = new Date();
 
